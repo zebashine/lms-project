@@ -20,9 +20,6 @@
             width: 320px;
             margin: auto;
             box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
-        }
-
-        h1 {
             margin-bottom: 20px;
         }
 
@@ -47,63 +44,97 @@
         button:hover {
             background: #5a67d8;
         }
+
+        ul {
+            text-align: left;
+        }
     </style>
 </head>
 
 <body>
 
-    <h1>🚀 LMS APP</h1>
+<h1>🚀 LMS APP</h1>
 
-    <div class="container">
+<!-- AUTH BOX -->
+<div class="container" id="authBox">
 
-        <h2>Register</h2>
+    <h2>Register</h2>
+    <input id="name" placeholder="Name"><br>
+    <input id="email" placeholder="Email"><br>
+    <input id="password" type="password" placeholder="Password"><br>
+    <button onclick="register()">Register</button>
 
-        <input id="name" placeholder="Name"><br>
-        <input id="email" placeholder="Email"><br>
-        <input id="password" type="password" placeholder="Password"><br>
+    <h2>Login</h2>
+    <input id="loginEmail" placeholder="Email"><br>
+    <input id="loginPassword" type="password" placeholder="Password"><br>
+    <button onclick="login()">Login</button>
 
-        <button onclick="register()">Register</button>
+</div>
 
-        <h2>Login</h2>
+<!-- DASHBOARD -->
+<div class="container" id="dashboard" style="display:none;">
+    <h2>📚 My Courses</h2>
 
-        <input id="loginEmail" placeholder="Email"><br>
-        <input id="loginPassword" type="password" placeholder="Password"><br>
+    <p>Welcome! You are logged in 🎉</p>
 
-        <button onclick="login()">Login</button>
+    <ul>
+        <li>📘 Machine Learning Basics</li>
+        <li>📗 Data Structures</li>
+        <li>📙 Web Development</li>
+    </ul>
 
-    </div>
+    <button onclick="logout()">Logout</button>
+</div>
 
-    <script>
-        // REGISTER FUNCTION
-        function register() {
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
+<script>
 
-            if (!name || !email || !password) {
-                alert("Please fill all fields ❌");
-                return;
-            }
+// REGISTER
+function register() {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-            localStorage.setItem("user", JSON.stringify({ email, password }));
+    if (!name || !email || !password) {
+        alert("Please fill all fields ❌");
+        return;
+    }
 
-            alert("User registered successfully ✅");
-        }
+    localStorage.setItem("user", JSON.stringify({ email, password }));
 
-        // LOGIN FUNCTION
-        function login() {
-            const email = document.getElementById("loginEmail").value;
-            const password = document.getElementById("loginPassword").value;
+    alert("User registered successfully ✅");
+}
 
-            const user = JSON.parse(localStorage.getItem("user"));
+// LOGIN
+function login() {
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
 
-            if (user && user.email === email && user.password === password) {
-                alert("Login successful 🎉");
-            } else {
-                alert("Invalid credentials ❌");
-            }
-        }
-    </script>
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (user && user.email === email && user.password === password) {
+        document.getElementById("authBox").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+    } else {
+        alert("Invalid credentials ❌");
+    }
+}
+
+// LOGOUT
+function logout() {
+    document.getElementById("authBox").style.display = "block";
+    document.getElementById("dashboard").style.display = "none";
+}
+
+// AUTO LOGIN (if user already registered)
+window.onload = function() {
+    const user = localStorage.getItem("user");
+    if (user) {
+        document.getElementById("authBox").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+    }
+};
+
+</script>
 
 </body>
 </html>
